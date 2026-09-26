@@ -44,7 +44,7 @@ header.solid{background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bot
 
 /* hero */
 .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding-bottom:9vh}
-.hero-bg{position:absolute;inset:0;background:url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=2000&q=75") center/cover}
+.hero-bg{position:absolute;inset:0;background:url("img/fleet/urus-1.jpg") center/cover}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.25) 40%,rgba(10,10,10,.95) 100%)}
 .hero .wrap{position:relative;width:100%}
 .hero h1{font-size:clamp(2.6rem,7vw,5.6rem);margin:18px 0 20px;max-width:14ch}
@@ -79,6 +79,22 @@ section{padding:110px 0}
 .price{font-family:"Playfair Display",serif;font-size:1.5rem}
 .price small{font-family:Inter;font-size:.72rem;color:var(--mute);letter-spacing:.1em}
 .car-foot .btn{padding:11px 18px;font-size:.68rem}
+
+.car-img{cursor:zoom-in}
+.count{position:absolute;bottom:14px;right:14px;background:rgba(10,10,10,.8);padding:6px 12px;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,5,5,.97);display:none;flex-direction:column}
+.lb.open{display:flex}
+.lb-top{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;gap:12px}
+.lb-top h3{font-size:1.2rem}
+.lb-top small{color:var(--mute);font-size:.72rem;letter-spacing:.15em}
+.lb-x{background:none;border:1px solid var(--line);color:var(--text);width:44px;height:44px;font-size:1.4rem;cursor:pointer;flex:none}
+.lb-track{flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.lb-track::-webkit-scrollbar{display:none}
+.lb-track img{flex:0 0 100%;width:100%;height:100%;min-width:0;object-fit:contain;scroll-snap-align:center}
+.lb-nav{position:absolute;top:50%;background:rgba(10,10,10,.6);border:1px solid var(--line);color:var(--text);width:50px;height:50px;font-size:1.3rem;cursor:pointer}
+.lb-prev{left:16px}.lb-next{right:16px}
+.lb-bot{padding:14px 20px calc(14px + env(safe-area-inset-bottom));display:flex;gap:12px;justify-content:center}
+@media (max-width:600px){.lb-nav{display:none}}
 
 /* steps */
 .dark{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -223,9 +239,9 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
     </div>
     <div class="filters reveal">
       <button class="chip on" data-f="all">All</button>
+      <button class="chip" data-f="exotic">Exotic</button>
       <button class="chip" data-f="luxury">Luxury</button>
-      <button class="chip" data-f="suv">SUV</button>
-      <button class="chip" data-f="sedan">Sedan</button>
+      <button class="chip" data-f="suv">SUV &amp; Truck</button>
     </div>
     <div class="grid" id="grid"></div>
   </div>
@@ -334,6 +350,13 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
   </div>
 </footer>
 
+<div class="lb" id="lb">
+  <div class="lb-top"><div><h3 id="lbT"></h3><small id="lbC"></small></div><button class="lb-x" onclick="closeG()" aria-label="Close">×</button></div>
+  <div class="lb-track" id="lbTrack"></div>
+  <button class="lb-nav lb-prev" onclick="step(-1)" aria-label="Previous">‹</button><button class="lb-nav lb-next" onclick="step(1)" aria-label="Next">›</button>
+  <div class="lb-bot"><a href="#book" class="btn btn-gold" id="lbBook">Reserve This Car</a><a href="tel:+15716042288" class="btn btn-ghost">Call for Quote</a></div>
+</div>
+
 <div class="mbar">
   <a href="tel:+15716042288" class="btn btn-ghost">Call</a>
   <a href="#book" class="btn btn-gold">Reserve</a>
@@ -342,22 +365,28 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
 <script>
 // EDIT FLEET HERE — price: null shows "Call for rate"
 const FLEET = [
-  {name:"Mercedes-Benz S-Class", type:"luxury", seats:5, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=900&q=70"},
-  {name:"Porsche 911", type:"luxury", seats:4, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&q=70"},
-  {name:"BMW M Series", type:"luxury", seats:5, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1555215695-3004980ad54e?w=900&q=70"},
-  {name:"Range Rover", type:"suv", seats:5, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=900&q=70"},
-  {name:"Premium SUV", type:"suv", seats:7, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=900&q=70"},
-  {name:"Executive Sedan", type:"sedan", seats:5, trans:"Auto", price:null, img:"https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=900&q=70"},
+  {name:"Lamborghini Urus", type:"exotic", a:"5 Seats", b:"657 HP", price:null, imgs:["img/fleet/urus-1.jpg", "img/fleet/urus-2.jpg", "img/fleet/urus-3.jpg", "img/fleet/urus-4.jpg", "img/fleet/urus-5.jpg", "img/fleet/urus-6.jpg", "img/fleet/urus-7.jpg", "img/fleet/urus-8.jpg", "img/fleet/urus-9.jpg"]},
+  {name:"Corvette C8 Stingray 3LT", type:"exotic", a:"2 Seats", b:"V8 · Mid-Engine", price:null, imgs:["img/fleet/c8-1.jpg", "img/fleet/c8-2.jpg", "img/fleet/c8-3.jpg", "img/fleet/c8-4.jpg", "img/fleet/c8-5.jpg", "img/fleet/c8-6.jpg"]},
+  {name:"Mercedes-AMG GT", type:"exotic", a:"2 Seats", b:"V8 Biturbo", price:null, imgs:["img/fleet/amggt-1.jpg", "img/fleet/amggt-2.jpg", "img/fleet/amggt-3.jpg", "img/fleet/amggt-4.jpg", "img/fleet/amggt-5.jpg"]},
+  {name:"Porsche Taycan 2024", type:"luxury", a:"4 Seats", b:"Electric", price:null, imgs:["img/fleet/taycan-1.jpg", "img/fleet/taycan-2.jpg", "img/fleet/taycan-3.jpg", "img/fleet/taycan-4.jpg", "img/fleet/taycan-5.jpg", "img/fleet/taycan-6.jpg", "img/fleet/taycan-7.jpg", "img/fleet/taycan-8.jpg", "img/fleet/taycan-9.jpg", "img/fleet/taycan-10.jpg", "img/fleet/taycan-11.jpg", "img/fleet/taycan-12.jpg", "img/fleet/taycan-13.jpg"]},
+  {name:"Mercedes-Benz S580 2023", type:"luxury", a:"5 Seats", b:"V8 · Chauffeur Ready", price:null, imgs:["img/fleet/s580-1.jpg", "img/fleet/s580-2.jpg", "img/fleet/s580-3.jpg", "img/fleet/s580-4.jpg", "img/fleet/s580-5.jpg", "img/fleet/s580-6.jpg"]},
+  {name:"Mercedes-AMG GT 53 4-Door", type:"luxury", a:"4 Seats", b:"AWD", price:null, imgs:["img/fleet/gt53-1.jpg", "img/fleet/gt53-2.jpg", "img/fleet/gt53-3.jpg"]},
+  {name:"Tesla Cyberbeast", type:"suv", a:"5 Seats", b:"Tri-Motor AWD", price:null, imgs:["img/fleet/cyberbeast-1.jpg", "img/fleet/cyberbeast-2.jpg", "img/fleet/cyberbeast-3.jpg", "img/fleet/cyberbeast-4.jpg", "img/fleet/cyberbeast-5.jpg", "img/fleet/cyberbeast-6.jpg", "img/fleet/cyberbeast-7.jpg", "img/fleet/cyberbeast-8.jpg", "img/fleet/cyberbeast-9.jpg", "img/fleet/cyberbeast-10.jpg", "img/fleet/cyberbeast-11.jpg", "img/fleet/cyberbeast-12.jpg"]},
+  {name:"Porsche Cayenne 2024", type:"suv", a:"5 Seats", b:"AWD", price:null, imgs:["img/fleet/cayenne-1.jpg", "img/fleet/cayenne-2.jpg", "img/fleet/cayenne-3.jpg", "img/fleet/cayenne-4.jpg", "img/fleet/cayenne-5.jpg", "img/fleet/cayenne-6.jpg", "img/fleet/cayenne-7.jpg", "img/fleet/cayenne-8.jpg", "img/fleet/cayenne-9.jpg", "img/fleet/cayenne-10.jpg"]},
+  {name:"Porsche Macan", type:"suv", a:"5 Seats", b:"AWD", price:null, imgs:["img/fleet/macan-1.jpg", "img/fleet/macan-2.jpg", "img/fleet/macan-3.jpg", "img/fleet/macan-4.jpg", "img/fleet/macan-5.jpg", "img/fleet/macan-6.jpg", "img/fleet/macan-7.jpg", "img/fleet/macan-8.jpg", "img/fleet/macan-9.jpg", "img/fleet/macan-10.jpg"]},
+  {name:"Mercedes-AMG GLE 53 Coupe 2023", type:"suv", a:"5 Seats", b:"4MATIC", price:null, imgs:["img/fleet/glecoupe-1.jpg", "img/fleet/glecoupe-2.jpg", "img/fleet/glecoupe-3.jpg", "img/fleet/glecoupe-4.jpg", "img/fleet/glecoupe-5.jpg", "img/fleet/glecoupe-6.jpg"]},
+  {name:"Mercedes-AMG GLE 53 2024", type:"suv", a:"5 Seats", b:"4MATIC", price:null, imgs:["img/fleet/gle-1.jpg", "img/fleet/gle-2.jpg", "img/fleet/gle-3.jpg", "img/fleet/gle-4.jpg", "img/fleet/gle-5.jpg", "img/fleet/gle-6.jpg"]},
+  {name:"Black Trucks \u00b7 Chauffeur Available", type:"suv", a:"Seats Vary", b:"Chauffeur Option", price:null, imgs:["img/fleet/trucks-1.jpg", "img/fleet/trucks-2.jpg", "img/fleet/trucks-3.jpg", "img/fleet/trucks-4.jpg"]}
 ];
 const grid=document.getElementById('grid'), sel=document.getElementById('vehicle');
-const label={luxury:"Luxury",suv:"SUV",sedan:"Sedan"};
+const label={exotic:"Exotic",luxury:"Luxury",suv:"SUV & Truck"};
 function render(f){
   grid.innerHTML=FLEET.filter(c=>f==="all"||c.type===f).map(c=>`
     <article class="car">
-      <div class="car-img"><img src="${c.img}" alt="${c.name}" loading="lazy"><span class="tag">${label[c.type]}</span></div>
+      <div class="car-img" onclick="openG(${FLEET.indexOf(c)})"><img src="${c.imgs[0]}" alt="${c.name}" loading="lazy"><span class="tag">${label[c.type]}</span><span class="count">${c.imgs.length} Photos</span></div>
       <div class="car-body">
         <h3>${c.name}</h3>
-        <div class="specs"><span>${c.seats} Seats</span><span>${c.trans}</span><span>Delivery OK</span></div>
+        <div class="specs"><span>${c.a}</span><span>${c.b}</span><span>Delivery OK</span></div>
         <div class="car-foot">
           <div class="price">${c.price?`$${c.price}<small> /DAY</small>`:`<small>CALL FOR RATE</small>`}</div>
           <a href="#book" class="btn btn-gold" onclick="pick('${c.name}')">Reserve</a>
@@ -373,6 +402,13 @@ const hd=document.getElementById('top');
 addEventListener('scroll',()=>hd.classList.toggle('solid',scrollY>40),{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const lb=document.getElementById('lb'),tr=document.getElementById('lbTrack');
+function openG(i){const c=FLEET[i];document.getElementById('lbT').textContent=c.name;lb.classList.add('open');tr.innerHTML=c.imgs.map(u=>`<img src="${u}" alt="${c.name}">`).join('');tr.scrollLeft=0;upd();document.getElementById('lbBook').onclick=()=>{pick(c.name);closeG()};lb.classList.add('open');document.body.style.overflow='hidden'}
+function closeG(){lb.classList.remove('open');document.body.style.overflow=''}
+function step(d){tr.scrollBy({left:d*tr.clientWidth,behavior:'smooth'})}
+function upd(){const n=tr.children.length,i=Math.round(tr.scrollLeft/tr.clientWidth)+1;document.getElementById('lbC').textContent=`PHOTO ${i} / ${n}`}
+tr.addEventListener('scroll',upd,{passive:true});
+addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeG();if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
 document.querySelectorAll('.rev p').forEach(p=>{const b=p.nextElementSibling;if(p.scrollHeight>p.clientHeight+4){b.hidden=false;b.onclick=()=>{b.textContent=p.classList.toggle('open')?'Show less':'Read more'}}});
 document.getElementById('yr').textContent=new Date().getFullYear();
 const today=new Date().toISOString().split('T')[0];
