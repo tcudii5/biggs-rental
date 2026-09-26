@@ -101,9 +101,27 @@ section{padding:110px 0}
 
 /* reviews */
 .reviews{text-align:center}
-.stars{color:var(--gold);letter-spacing:6px;font-size:1.3rem}
-.reviews h2{font-size:clamp(2rem,4.5vw,3rem);margin:16px 0}
-.reviews p{color:var(--mute);max-width:560px;margin:0 auto 32px}
+.stars{color:var(--gold);letter-spacing:4px;font-size:1.1rem}
+.reviews h2{font-size:clamp(2rem,4.5vw,3rem);margin:12px 0 0}
+.gscore{display:inline-flex;align-items:center;gap:22px;margin:34px auto 50px;padding:22px 32px;border:1px solid var(--line);background:var(--card)}
+.gscore .big{font-family:"Playfair Display",serif;font-size:3.4rem;line-height:1;color:var(--text)}
+.gscore .meta{text-align:left;font-size:.8rem;color:var(--mute)}
+.gscore .meta b{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:500;font-size:.9rem;margin-top:4px}
+.gl{width:18px;height:18px}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:left}
+.rev{background:var(--card);border:1px solid var(--line);padding:32px 28px;position:relative;display:flex;flex-direction:column;transition:.35s}
+.rev:hover{border-color:var(--gold)}
+.rev::before{content:"\201C";position:absolute;top:18px;right:24px;font-family:"Playfair Display",serif;font-size:4.5rem;line-height:.8;color:var(--gold);opacity:.22}
+.rev .stars{font-size:.95rem;margin-bottom:16px}
+.rev p{color:#d6d2c9;font-size:.95rem;line-height:1.75;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7;overflow:hidden}
+.rev p.open{-webkit-line-clamp:unset}
+.more{background:none;border:0;color:var(--gold);font:500 .7rem Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:12px 0 0;text-align:left;margin-bottom:auto}
+.rev .who{display:flex;align-items:center;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0a0a0a;display:grid;place-items:center;font-family:"Playfair Display",serif;font-weight:700}
+.who b{display:block;font-weight:500;font-size:.92rem}
+.who small{color:var(--mute);font-size:.75rem;display:flex;align-items:center;gap:6px}
+.rev-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+@media (max-width:960px){.rgrid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -20px;padding:0 20px}.rgrid::-webkit-scrollbar{display:none}.rev{scroll-snap-align:center}}
 
 /* reqs */
 .reqs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -165,7 +183,7 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
   <div class="wrap nav">
     <a href="#" class="logo">BIG G'S <span>RENTAL</span></a>
     <nav class="links">
-      <a href="#fleet">Fleet</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#book">Contact</a>
+      <a href="#fleet">Fleet</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#reviews">Reviews</a><a href="#book">Contact</a>
     </nav>
     <div class="nav-cta">
       <a href="tel:+15716042288" class="btn btn-ghost">(571) 604-2288</a>
@@ -175,7 +193,7 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
   </div>
 </header>
 <nav class="mnav" id="mnav" onclick="this.classList.remove('open')">
-  <a href="#fleet">Fleet</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#book">Contact</a>
+  <a href="#fleet">Fleet</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#reviews">Reviews</a><a href="#book">Contact</a>
   <a href="#book" class="btn btn-gold">Reserve Now</a>
 </nav>
 
@@ -190,7 +208,7 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
       <a href="#book" class="btn btn-ghost">Reserve Now</a>
     </div>
     <div class="hero-stats">
-      <div><b>Local</b><small>Owned &amp; Operated</small></div>
+      <div><b>4.9 ★</b><small>125 Google Reviews</small></div>
       <div><b>24/7</b><small>Customer Support</small></div>
       <div><b>DMV</b><small>Delivery Available</small></div>
     </div>
@@ -248,12 +266,23 @@ footer{border-top:1px solid var(--line);padding:50px 0 110px;color:var(--mute);f
   </div>
 </section>
 
-<section class="dark reviews">
+<section class="dark reviews" id="reviews">
   <div class="wrap reveal">
-    <div class="stars">★★★★★</div>
+    <div class="eyebrow">Google Reviews</div>
     <h2>What our clients say</h2>
-    <p>Real reviews from real renters. See why DMV drivers keep coming back to Big G's.</p>
-    <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/search?q=Big+G%27s+Rental+Columbia+MD+reviews">Read Our Google Reviews</a>
+    <div class="gscore"><div class="big">4.9</div><div class="meta"><div class="stars">★★★★★</div><b><svg class="gl" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg> 125 Google reviews</b></div></div>
+    <div class="rgrid">
+      <article class="rev"><div class="stars">★★★★★</div><p>I recently had a stressful experience with a car rental that turned into a blessing thanks to Big G's Rental. I had made a reservation with Enterprise for a car, but they informed me last minute that they didn't have it available, and I had a prom the next day! I was feeling hopeless until I discovered Big G's Rental on Instagram while searching for DMV car rentals. I called the number listed in their bio, and Gibson, the owner, was incredibly helpful. He hooked me up with a stunning green Mustang, which totally made my night. The car was in fantastic condition and added that extra flair to my prom experience. Thanks to Gibson and Big G's Rental, I had a great time and would highly recommend their services to anyone in need of a reliable and friendly rental experience!</p><button class="more" hidden>Read more</button>
+        <div class="who"><div class="av">N</div><div><b>Nate Moreno</b><small><svg class="gl" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg> Google review · 4 months ago</small></div></div></article>
+      <article class="rev"><div class="stars">★★★★★</div><p>I appreciate the workers at Big G's rental. I had to find something last minute and I live all the way in PA and they were willing to meet me halfway to deliver the car to me. I would use this company again. My son was absolutely in love with the Mercedes GLE AMG car for prom!! Big G'a rental really came through and the process was seamless and the communication throughout the whole process was great! Again, thank you so much!</p><button class="more" hidden>Read more</button>
+        <div class="who"><div class="av">M</div><div><b>Moe</b><small><svg class="gl" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg> Google review · 4 months ago</small></div></div></article>
+      <article class="rev"><div class="stars">★★★★★</div><p>I would book with him everytime. Very professional. Thank you for your services. The rental car was amazing. The communication was top-tier 10 out of 10 recommend</p><button class="more" hidden>Read more</button>
+        <div class="who"><div class="av">E</div><div><b>Erica Mo</b><small><svg class="gl" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg> Google review · 3 months ago</small></div></div></article>
+    </div>
+    <div class="rev-cta">
+      <a class="btn btn-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Big+G%27s+Car+Rental">Read All 125 Reviews</a>
+      <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/Big+G%27s+Car+Rental">Leave a Review</a>
+    </div>
   </div>
 </section>
 
@@ -344,6 +373,7 @@ const hd=document.getElementById('top');
 addEventListener('scroll',()=>hd.classList.toggle('solid',scrollY>40),{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('.rev p').forEach(p=>{const b=p.nextElementSibling;if(p.scrollHeight>p.clientHeight+4){b.hidden=false;b.onclick=()=>{b.textContent=p.classList.toggle('open')?'Show less':'Read more'}}});
 document.getElementById('yr').textContent=new Date().getFullYear();
 const today=new Date().toISOString().split('T')[0];
 document.querySelectorAll('input[type=date]').forEach(i=>i.min=today);
